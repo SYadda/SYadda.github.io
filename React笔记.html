@@ -1,0 +1,175 @@
+<!DOCTYPE html><html><head>
+      <title>React笔记</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="董杭杭的react学习笔记-20231202">董杭杭的React学习笔记 2023.12.02 </h1>
+<p>本笔记基于Next.JS的官方教程：<a href="https://nextjs.org/learn-pages-router/foundations/from-javascript-to-react">From JavaScript to React</a></p>
+<h5 id="教程第1-3节">教程第1-3节 </h5>
+<p>HTML，JS，DOM，React，JSX，babel，Next.JS 彼此之间的关系</p>
+<h3 id="静态网页无js和动态网页有js">静态网页(无JS)和动态网页(有JS) </h3>
+<p>HTML：网页的文本部分<br>
+JS：网页的代码部分<br>
+CSS：网页的显示格式（文本美化、字体、排版等）</p>
+<p>DOM：网页文本的层次结构（例如，一个目录包含很多条目，一个大版块包含多个文本框和图片），以树形结构表示。</p>
+<p>JS代码可以监视用户行为（如点击按钮，输入文字等）并做出反馈，通过增删改DOM树中的元素，<strong>动态</strong>修改网页的显示内容，让用户与网页<strong>产生交互</strong>。</p>
+<p>有JS，网页才能动，否则网页就是类似markdown的文档。</p>
+<blockquote>
+<p>在Edge F12开发者工具中：<br>
+“源代码”显示未运行时，静态的HTML，JS等代码文件；<br>
+“元素”显示运行JS更新DOM树之后，此时实际显示的页面，对应的的HTML代码。</p>
+</blockquote>
+<p>运行JS代码，以得到实际显示的HTML代码(即“渲染网页UI”)，需要一定的计算资源。而用户的终端（手机、电脑、车机）可能性能不足。</p>
+<p>由此，一种<strong>服务器端渲染</strong>的技术应运而生：基于React编写网页，而将运行JS代码的工作，部分转移到服务器上，以减小通过网络传输给用户的JS文件大小，及对用户的计算资源需求，从而加快网页访问速度。这就是<strong>Next.JS</strong>，一个基于 React 的开源前端框架，用于帮助构建网站。</p>
+<h3 id="命令式编程直接写js和声明式编程调js库即react">命令式编程(直接写JS)和声明式编程(调JS库，即React) </h3>
+<p>JS是一种<strong>命令式编程</strong>, 即一步接一步的告诉电脑该做什么。</p>
+<p>因此，理论上，纯JS可以写出一切前端页面，但很麻烦，相当于自己手搓所有轮子，例如网页中的按钮、窗口、动画等。</p>
+<p>如果现有一些造好的轮子，前端程序员只是告诉电脑，我要拿按钮轮子来用，电脑自动调库，执行这个轮子内部的JS代码，而具体细节，不需要前端程序员关心。这就是一种<strong>声明式编程</strong>。</p>
+<blockquote>
+<p>React官方教程的举例：<br>
+<strong>命令式编程</strong>：“编织面团，擀面团，加入番茄酱，加入奶酪，加入火腿，加入菠萝，在石炉中以200摄氏度烘烤......”<br>
+<strong>声明式编程</strong>：“请来个夏威夷披萨。”</p>
+</blockquote>
+<p>React是一个<strong>声明式 UI 库</strong>，包含大量前端UI轮子，这些轮子底层用JS编写。</p>
+<p>写React代码，即是调用这些轮子，以<strong>声明式编程</strong>编写网页。</p>
+<h3 id="jsx">JSX </h3>
+<p>基于React，当想要在DOM中新增一个元素时，可以直接<strong>声明式</strong>的告诉程序，这个元素长什么样子，即其HTML代码，React可以帮你把它做出来，放在DOM树里。</p>
+<p>但是，由于React轮子们的底层由JS实现，这一HTML代码实际上被转化为一个JS对象实例，然后再按照JS语法，在DOM树中增删改。</p>
+<p>因此，为JS引入了一个<strong>语法糖</strong>，叫做<code>JSX</code>，实现“<strong>将声明式的HTML代码嵌入JS代码</strong>”这一功能。</p>
+<blockquote>
+<p>语法糖，又名语法扩展，其作用是：<strong>让代码更加简洁易读</strong>，例如用 ? : 替代if else，用for循环替代while循环。<br>
+使用语法糖不会提高代码运行效率，语言的编译器不认语法糖，需要将语法糖还原为原本的语法，再编译运行。</p>
+</blockquote>
+<p>JSX的语法与HTML，JS几乎完全一样，但需要遵循三个规则：</p>
+<ol>
+<li>函数只能返回一个DOM元素，如果想要返回多个，必须用一个父元素包裹它们。</li>
+<li>所有DOM元素必须显式闭合，即使它们在HTML中是自闭合的，例如 <code>&lt;img xx="yy"&gt;</code>应当改成 <code>&lt;img xx="yy"/&gt;</code>, <code>&lt;li&gt;oranges</code>应当改成<code>&lt;li&gt;oranges&lt;/li&gt;</code></li>
+<li>尽量使用小驼峰命名变量。</li>
+</ol>
+<p>所有浏览器都支持JS，但如果要在浏览器中运行JSX，则必须“解语法糖”，将其还原为JS，这一过程需要使用<code>babel</code></p>
+<p>此外，还必须显式声明这是一段JSX代码 <code>&lt;script type="text/jsx"&gt; ...your JSX code...  &lt;/script&gt;</code></p>
+<p>例如，使用React，在DOM树中新增一个h1标题元素，需要调用三个库：</p>
+<ul>
+<li><code>react</code>(核心代码库)</li>
+<li><code>react-dom</code> (使React支持DOM的库)</li>
+<li><code>babel</code> (将JSX转为浏览器能看懂的JS)</li>
+</ul>
+<pre data-role="codeBlock" data-info="html" class="language-html html"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>app<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://unpkg.com/react@17/umd/react.development.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://unpkg.com/react-dom@17/umd/react-dom.development.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+    <span class="token comment">&lt;!-- Babel Script --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://unpkg.com/@babel/standalone/babel.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/jsx<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+      <span class="token keyword keyword-const">const</span> app <span class="token operator">=</span> <span class="token dom variable">document</span><span class="token punctuation">.</span><span class="token method function property-access">getElementById</span><span class="token punctuation">(</span><span class="token string">'app'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token maybe-class-name">ReactDOM</span><span class="token punctuation">.</span><span class="token method function property-access">render</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>h1<span class="token operator">&gt;</span><span class="token maybe-class-name">Develop</span><span class="token punctuation">.</span> <span class="token property-access"><span class="token maybe-class-name">Preview</span></span><span class="token punctuation">.</span> <span class="token property-access"><span class="token maybe-class-name">Ship</span></span><span class="token punctuation">.</span> <span class="token property-access">🚀</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">&gt;</span><span class="token punctuation">,</span> app<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></span>
+</code></pre><p>其中，<code>ReactDOM.render</code>是用来向DOM中新增元素的函数，其里面的<code>&lt;h1&gt;Develop. Preview. Ship. 🚀&lt;/h1&gt;</code> 就是JSX中的“嵌入HTML代码”。</p>
+<h5 id="教程第4节">教程第4节 </h5>
+<p>学习 React 所需的基本 JS，包括：</p>
+<ul>
+<li>函数和箭头函数</li>
+<li>对象</li>
+<li>数组和数组方法</li>
+<li>解构</li>
+<li>模板文本</li>
+<li>三元运算符</li>
+<li>ES 模块和导入/导出语法</li>
+</ul>
+<h5 id="教程第5节">教程第5节 </h5>
+<p>React的三个核心概念，包括组件(Components)、道具(Props)、状态(State)</p>
+<h5 id="教程第6节">教程第6节 </h5>
+<h3 id="组件-components">组件 Components </h3>
+<p>组件是整个网页UI的组成单元，每个组件是一个DOM树的元素，可视为一个封装好的轮子，亦可将几个小组件打包为一个大组件。</p>
+<p>将许多组件像“搭积木”一样拼起来，就构成了整个网页UI。</p>
+<p>组件彼此间互不依赖，修改网页UI时，可以只修改部分组件，其他保持原样。</p>
+<blockquote>
+<p>React 理念：<strong>UI = render(data)</strong> <br><br>
+UI：最终呈现给用户的网页<br>
+data：数据<br>
+render： JSX函数，它是“纯函数”，即return输出完全取决于输入，且除返回一个值外，无其他“副作用”。</p>
+</blockquote>
+<p>JSX函数的首字母必须大写，返回值为一个组件。因此，要使用JSX函数返回的组件，就要像HTML元素那样，套上尖括号<code>&lt;/&gt;</code></p>
+<p>在上述代码中加入JSX函数：</p>
+<pre data-role="codeBlock" data-info="html" class="language-html html"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/jsx<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+    <span class="token keyword keyword-const">const</span> app <span class="token operator">=</span> <span class="token dom variable">document</span><span class="token punctuation">.</span><span class="token method function property-access">getElementById</span><span class="token punctuation">(</span><span class="token string">'app'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token maybe-class-name">ReactDOM</span><span class="token punctuation">.</span><span class="token method function property-access">render</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>h1<span class="token operator">&gt;</span><span class="token maybe-class-name">Develop</span><span class="token punctuation">.</span> <span class="token property-access"><span class="token maybe-class-name">Preview</span></span><span class="token punctuation">.</span> <span class="token property-access"><span class="token maybe-class-name">Ship</span></span><span class="token punctuation">.</span> <span class="token property-access">🚀</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">&gt;</span><span class="token punctuation">,</span> app<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre><pre data-role="codeBlock" data-info="html" class="language-html html"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/jsx<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+    <span class="token keyword keyword-const">const</span> app <span class="token operator">=</span> <span class="token dom variable">document</span><span class="token punctuation">.</span><span class="token method function property-access">getElementById</span><span class="token punctuation">(</span><span class="token string">"app"</span><span class="token punctuation">)</span>
+    <span class="token keyword keyword-function">function</span> <span class="token function"><span class="token maybe-class-name">Header</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow keyword-return">return</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>h1<span class="token operator">&gt;</span><span class="token maybe-class-name">Develop</span><span class="token punctuation">.</span> <span class="token property-access"><span class="token maybe-class-name">Preview</span></span><span class="token punctuation">.</span> <span class="token property-access"><span class="token maybe-class-name">Ship</span></span><span class="token punctuation">.</span> <span class="token property-access">🚀</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">&gt;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token maybe-class-name">ReactDOM</span><span class="token punctuation">.</span><span class="token method function property-access">render</span><span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token maybe-class-name">Header</span> <span class="token operator">/</span><span class="token operator">&gt;</span><span class="token punctuation">,</span> app<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre><h3 id="把html和js分开">把HTML和JS分开 </h3>
+<p>这一部分和教程关系不大，是我自己折腾的。</p>
+<p>众所周知，良好的网页，应当将HTML，CSS，JS拆分为三个不同的文件，分别维护开发。</p>
+<p>当只有一个HTML文件时，可在Windows系统文件资源管理器中，直接使用浏览器打开它，此时，浏览器将通过file文件协议，读取这个文件，并解析HTML，此时一切正常。例如：</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>file:///C:/Users/abc/Desktop/a.html
+file://wsl.localhost/Ubuntu-18.04/home/abc/react/a.html
+</code></pre><p>但是，如果这个HTML引用了一个JS文件，那么，浏览器出于安全考虑，默认将<strong>禁止</strong>这么做，即同源策略(<strong>CORS</strong>，Cross-Origin Resource Sharing)</p>
+<blockquote>
+<p>Edge F12可查看到如下报错信息：<br>
+Access to XMLHttpRequest at 'file://...' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, isolated-app, chrome-extension, chrome-untrusted, https, edge.</p>
+</blockquote>
+<p>（想象一下，如果一个文件，只要知道其他文件的地址，就可以任意读取本地文件系统下的任何一个文件，这将有多大的安全隐患！）</p>
+<p>因此，较为安全的做法是：在项目文件夹内，<strong>架设一个本地服务器</strong>，管理该文件夹内的所有HTML，CSS，JS等文件。然后，通过 <code>http://localhost:8080/</code> 访问。</p>
+<p>此时，该文件夹内的文件地址，将映射为网络文件地址，例如：<br>
+<code>file://wsl.localhost/Ubuntu-18.04/home/abc/react/a.html</code> 可映射为 <code>http://localhost:8080/a.html</code>，CSS，JS文件同理。</p>
+<p>然后，在浏览器中输入<code>http://localhost:8080/a.html</code>，以HTTP协议访问本地服务器，使浏览器拿到对应的HTML文件。当引用JS时，再走一次HTTP协议，使浏览器拿到JS文件。</p>
+<p>这样一来，<code>a.html</code>所能引用的文件，就只能是本地服务器管理下的文件，即该项目文件夹内的文件，这显然是更安全的。</p>
+<h5 id="如何用npm架设本地服务器">如何用npm架设本地服务器 </h5>
+<p>JS原本是用于在浏览器端运行的代码。如果把所有的HTML，JS都放到用户的浏览器上运行，则不需要node.js和npm</p>
+<p>Node.js是一个开源的、跨平台的JavaScript运行环境，它可以让开发者在服务器端运行JS代码。</p>
+<p>npm是Node.js的包管理器(如同pip是python的包管理器)</p>
+<p>使用npm安装一个名为<code>http-server</code>的包：</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">-g</span> http-server <span class="token comment"># -g 表示全局安装</span>
+</code></pre><p><code>http-server</code>通过在Node.js环境中，运行一些JS代码，即可以本地电脑作为服务器端，架设localhost服务器。</p>
+<p>最简单的运行方式是，在在项目文件夹内，打开bash，运行<code>http-server</code>，即可从默认端口<code>http://localhost:8080/</code>访问</p>
+<p><code>http-server</code>亦有很多可供设置的参数，详见 <a href="https://www.npmjs.com/package/http-server">官方文档</a>，在此不做赘述。</p>
+<h5 id="附注关于npm的安装">附注：关于npm的安装 </h5>
+<p>如果直接使用apt安装Node.js和npm，即：</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> nodejs <span class="token function">npm</span>
+</code></pre><p>那么，Node.js和npm默认会被安装在<code>/usr/local</code>目录下。</p>
+<p>如果你害怕npm里的东西太多太乱，也可以直接从Node.js官网下载了一个预编译的版本，并将其解压到<code>/opt</code>目录(通常用于存放第三方或额外的软件和应用)</p>
+<p><code>/opt</code>目录不在环境变量中，其中的程序，不输入完整路径，就无法直接在bash中运行。</p>
+<p>再将其<strong>软连接</strong>到<code>/usr/local/bin</code>目录下。软连接由<code>ln -s</code>创建，如同Windows中的快捷方式。由于<code>/usr/local/bin</code>目录在PATH环境变量中，此后就可以在任何位置的bash中运行npm了。</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">ln</span> <span class="token parameter variable">-s</span> /opt/node-v16.20.2-linux-x64/bin/npm /usr/local/bin/npm
+<span class="token function">sudo</span> <span class="token function">ln</span> <span class="token parameter variable">-s</span> /opt/node-v16.20.2-linux-x64/bin/http-server /usr/local/bin/http-server
+</code></pre>
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

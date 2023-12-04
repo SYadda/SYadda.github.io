@@ -1,6 +1,8 @@
-# 董杭杭的React学习笔记 2023.12.02
+# 董杭杭的React学习笔记 2023.12
 
 本笔记基于Next.JS的官方教程：[From JavaScript to React](https://nextjs.org/learn-pages-router/foundations/from-javascript-to-react)
+
+（2023.12.05更新 此教程似乎已被Next.JS官网删除，我惊呆了）
 
 ##### 教程第1-3节
 
@@ -59,7 +61,7 @@ JSX的语法与HTML，JS几乎完全一样，但需要遵循三个规则：
 2. 所有DOM元素必须显式闭合，即使它们在HTML中是自闭合的，例如 `<img xx="yy">`应当改成 `<img xx="yy"/>`, `<li>oranges`应当改成`<li>oranges</li>`
 3. 尽量使用小驼峰命名变量。
 
-所有浏览器都支持JS，但如果要在浏览器中运行JSX，则必须“解语法糖”，将其还原为JS，这一过程需要使用`babel`
+所有浏览器都支持JS，但如果要在浏览器中运行JSX，则必须“解语法糖”，将其还原为JS，这一过程需要使用`babel` **fixme：这一过程有一定时间开销，正式版发布前，最好先将JSX预编译为JS**
 
 此外，还必须显式声明这是一段JSX代码 `<script type="text/jsx"> ...your JSX code...  </script>`
 
@@ -68,6 +70,8 @@ JSX的语法与HTML，JS几乎完全一样，但需要遵循三个规则：
 - `react`(核心代码库)
 - `react-dom` (使React支持DOM的库)
 - `babel` (将JSX转为浏览器能看懂的JS)
+
+开发过程中，建议把这三个JS库下载到本地，比如存到项目中的`lib`文件夹里，用起来会快不少。
 
 ``` html
 <html>
@@ -139,6 +143,14 @@ JSX函数的首字母必须大写，返回值为一个组件。因此，要使�
 </script>
 ```
 
+即使放在html文件中，写在`<script type="text/jsx">`块中的代码，也为JSX代码。JSX代码的注释格式与html不同。
+
+``` html
+<!-- 这是一个HTML注释 -->
+// 这是一个JS或JSX单行注释
+/* 这是一个CSS或JS或JSX多行注释 */
+```
+
 ### 把HTML和JS分开
 
 这一部分和教程关系不大，是我自己折腾的。
@@ -167,6 +179,12 @@ Access to XMLHttpRequest at 'file://...' from origin 'null' has been blocked by 
 然后，在浏览器中输入`http://localhost:8080/a.html`，以HTTP协议访问本地服务器，使浏览器拿到对应的HTML文件。当引用JS时，再走一次HTTP协议，使浏览器拿到JS文件。
 
 这样一来，`a.html`所能引用的文件，就只能是本地服务器管理下的文件，即该项目文件夹内的文件，这显然是更安全的。
+
+还有一个问题，如果对一个已上线的项目进行热修复，只更改JS文件，而不动HTML文件，则之前的HTML文件将可能被用户缓存，用户浏览器看到HTML文件未更改，可能默认为整个网页均未更改，故不会去请求加载新的网页。
+
+在自己的电脑上解决(Edge)：F12-设置-首选项-网络-禁用缓存(开发工具处于打开状态时)
+
+另外，建议给自己的浏览器安装react官方的[DevTool](https://react.dev/learn/react-developer-tools), 很有用。
 
 ##### 如何用npm架设本地服务器
 
@@ -207,4 +225,138 @@ sudo apt install nodejs npm
 ``` bash
 sudo ln -s /opt/node-v16.20.2-linux-x64/bin/npm /usr/local/bin/npm
 sudo ln -s /opt/node-v16.20.2-linux-x64/bin/http-server /usr/local/bin/http-server
+```
+
+##### 教程第7节
+
+### 道具 Props
+
+用于从外部向函数内**传入参数**。
+
+整个JSX函数的返回值，就是一个HTML的DOM树元素。因此，传参就是设置这个元素相关的属性。
+
+在JSX函数内部，如果想调用变量`title`，而非print这个字符串，则需外加大括号，如`<h1>{title}</h1>`
+
+事实上，在JSX函数内部，大括号内是一块“JS区域”，可以在里面写任意JS代码，进行任意运算，只要最后返回单个值即可。
+
+```jsx
+// 以下两种 Header写法，效果一致
+
+// 第一种，用大括号{}直接传入参数列表。
+function Header({ title }) {
+  console.log(title);           // 输出 React 💙
+  return <h1>{title}</h1>;
+}
+
+// 第二种，传入代表“参数”的props对象。此时，各个参数如同props的实例变量。
+function Header(props) {
+  // console.log(props);        // 输出 {title: 'React 💙'}
+  console.log(props.title);     // 输出 React 💙
+  return <h1>{props.title}</h1>;
+}
+function HomePage() {
+  return (<div><Header title="React 💙" /></div>);
+}
+```
+
+需要入参的函数，不传入参数，也能运行（重载）
+
+此时`title`的值为Boolean false或String undefined
+
+``` jsx
+function Header({ title }) {
+  console.log(title);
+  return <h1>{title ? title : "Default Title"}</h1>;
+}
+function HomePage() {
+  return (
+    <div>
+      <Header title="React 💙" />
+      <Header/>
+    </div>
+  );
+}
+```
+
+模板文字
+
+``` jsx
+function Header({ title }) {
+  return <h1>{`Cool ${title}`}</h1>;
+}
+function HomePage() {
+  return (
+    <div>
+      <Header title="React 💙" />
+      <Header/>
+    </div>
+  );
+}
+```
+
+数组和循环
+
+在循环中，需要一个唯一标识符`key`，表明当前在操作DOM树中的哪个元素。
+
+``` jsx
+function HomePage() {
+  const names = ["Ada Lovelace", "Grace Hopper", "Margaret Hamilton"];
+
+  return (
+    <div>
+      {names.map((name) => (
+        <li key={name}>{name}</li>
+      ))}
+    </div>
+  );
+}
+```
+
+##### 教程第8节
+
+### 状态 State
+
+识别、处理、响应用户的行为。
+
+**事件 Events** 表示网页中动态发生的交互，如用户点击按钮等。在React中，事件函数以**小驼峰**命名。
+
+例如，这里的`handleClick`就是一个响应事件的函数：`<button onClick = {handleClick}> Like </button>`
+
+`onClick = {}`大括号中的代码，将在用户点击按钮后，自动运行。
+
+> 如前所述，这里理论上可以写任何JS代码进去，不过一般还是用一个函数处理事件。
+
+响应事件的函数，既可以放在调用它的函数里面，也可以放在外面。
+
+``` jsx
+function handleClick() {
+  console.log("increment like count");
+}
+
+function HomePage() {
+  return <button onClick={handleClick}>Like</button>;
+}
+
+// 上下两种都行
+
+function HomePage() {
+  function handleClick() {
+    console.log("increment like count");
+  }
+  return <button onClick={handleClick}>Like</button>;
+}
+```
+
+**钩子函数**，用于获取网页中实时的状态，例如`React.useState()`
+
+const [变量名, 设置该变量的函数] = React.useState(变量初始值);
+
+```jsx
+function HomePage() {
+  const [likes, setLikes] = React.useState(0);
+
+  function handleClick() {setLikes(likes + 1);}
+
+  return <button onClick={handleClick}>Likes ({likes})</button>;
+}
 ```

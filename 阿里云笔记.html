@@ -31,92 +31,62 @@
 <p><a href="https://university.aliyun.com/">领券链接</a></p>
 <p>这个券，除了一些1折特价的服务器，全阿里云通用。但阿里云的服务器，要么1折，要么几乎不打折，导致这个优惠券很难用。</p>
 <p>可以白嫖一个新加坡的服务器，一年，2核1G内存，30Mb带宽，40G硬盘。具体流程见上述视频。</p>
-<h3 id="服务器配环境-ubuntu-2004">服务器配环境 (Ubuntu 20.04) </h3>
+<h3 id="服务器配环境-ubuntu-2204">服务器配环境 (Ubuntu 22.04) </h3>
 <h4 id="1-密码-密钥和ssh">1. 密码、密钥和ssh </h4>
 <p>如果每次用服务器，都要点开阿里云网页，那也太愚蠢了。</p>
 <p>因此，建议给自己的本地IDE接一个SSH，这样用起来就和本机/WSL没什么区别了。</p>
 <p>SSH有两种登录方式：密码和密钥。</p>
 <ul>
-<li>1.1 密码：登录非常简单，可以直接拿powershell输入：</li>
+<li>1.1 密码：登录非常简单，可以直接在powershell输入：<code>ssh username@host_ip</code></li>
 </ul>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">ssh</span> username@host_ip
-<span class="token comment"># 例如：</span>
-<span class="token function">ssh</span> abc@1.2.3.4
-</code></pre><p>按回车，等一下，然后再输入密码，即可登录SSH。</p>
+<p>例如：<code>ssh abc@1.2.3.4</code>，按回车，等一下，然后再输入密码，即可登录SSH。</p>
 <p>但它的缺点是，每次都得输入两次，先输入用户名再输入密码，配好了也不能无感使用。而且，用户名和密码经网络传输，可能被中间人攻击。<br>
 <br></p>
 <ul>
 <li>1.2 密钥：基于非对称加密，生成RSA公钥和私钥，公钥存于服务器上，私钥存于我自己电脑上，更加安全。</li>
 </ul>
-<blockquote>
-<p>阿里云工作台可以生成一个用于root密钥，步骤是：轻量应用服务器，服务器，我的轻量，远程连接，密钥管理，新建密钥。创建后，私钥会自动下载。</p>
-</blockquote>
-<p>私钥是一个<code>.pem</code>文件，它对安全要求非常严格，仅其所有者拥有读权限，其他所有用户(包括管理员)无权读、写、执行，否则密钥无法启用。</p>
-<p>在Windows 11中，这样设置<code>.pem</code>文件的权限：</p>
-<blockquote>
-<p>右键文件，属性，安全，高级，禁用继承（删除所有用户权限），添加，选择主体，输入自己的Windows用户名，确定，仅赋予读权限，确定，确定。</p>
-</blockquote>
-<p>完成设置后，即可使用该密钥访问服务器。拿powershell输入：</p>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">ssh</span> <span class="token parameter variable">-i</span> <span class="token string">"C:\xxxxxxxxx\xxx.pem"</span> username@host_ip
-</code></pre><p>即可访问服务器。使用VS Code时，此命令可以自动写入配置文件，以后就可以全自动登录了。<br>
+<p>每次登录时，将私钥文件，例如<code>xxx_rsa</code>传给ssh管理工具。在powershell输入: <code>ssh -i "absolute_path" username@host_ip</code></p>
+<p>例如：<code>ssh -i "C:\ProgramData\ssh\xxx_rsa" abc@1.2.3.4</code>，按回车，即可登录SSH。<br>
 <br></p>
 <ul>
-<li>1.3 虽然这样已经做到了全自动，但是，每次都登录root用户，有可能不小心修改了重要的东西，把系统搞炸。因此，建议新创一个有sudo权限的普通用户，比如叫做<code>newuser</code>，日常写代码，登录这个用户，只有必要时才进行sudo操作。</li>
+<li>1.3 建议新创一个有sudo权限的普通用户，比如叫做<code>newuser</code>，为其配置密钥。日常写代码，挂服务，都登录这个用户，只有必要时才进行sudo操作。</li>
 </ul>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token comment"># 使用root用户运行：</span>
-<span class="token function">useradd</span> <span class="token parameter variable">-m</span> <span class="token parameter variable">-s</span> /bin/bash newuser
+<blockquote>
+<p>阿里云工作台可以生成一个登录root的密钥，但是不建议用这个。<br>
+由于root可以执行各种重要敏感操作，我认为，执行root命令的时候，程序员至少需要<strong>意识到自己在使用root权限</strong>，即输入sudo。这能避免自己犯蠢。</p>
+</blockquote>
+<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token comment"># 在阿里云工作台，打开网页版bash，使用admin用户运行：</span>
+<span class="token function">sudo</span> <span class="token function">useradd</span> <span class="token parameter variable">-m</span> <span class="token parameter variable">-s</span> /bin/bash newuser
 <span class="token comment"># -m：在/home目录下，为新用户开设文件夹。</span>
 <span class="token comment"># -s：指定新用户使用的shell，/bin/bash即为root使用的shell (Ubuntu 20.04)</span>
 <span class="token comment"># 附注：任何用户，bash输入history，可查看本用户使用bash的历史记录。</span>
 
-<span class="token function">passwd</span> newuser
+<span class="token function">sudo</span> <span class="token function">passwd</span> newuser
 <span class="token comment"># 为新用户设置密码，之后需要输入两次密码。</span>
 
-<span class="token function">usermod</span> <span class="token parameter variable">-aG</span> <span class="token function">sudo</span> newuser
+<span class="token function">sudo</span> <span class="token function">usermod</span> <span class="token parameter variable">-aG</span> <span class="token function">sudo</span> newuser
 <span class="token comment"># 将新用户添加到 sudo 组，以赋予管理员权限。</span>
+
+<span class="token builtin class-name">logout</span>
+<span class="token comment"># 退出登录SSH</span>
+</code></pre><p>另外，如果想换一个用户名，可以这样删除<code>newuser</code>用户：</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">sudo</span> <span class="token function">pkill</span> <span class="token parameter variable">-u</span> newuser <span class="token comment"># 终止该用户的所有进程</span>
+<span class="token function">sudo</span> <span class="token function">userdel</span> <span class="token parameter variable">-r</span> newuser <span class="token comment"># 删除该用户，及其邮件目录、/home下的主目录。</span>
 </code></pre><br>
 <ul>
-<li>1.4 现在，新用户<code>newuser</code>已经创建好了，我们需要登录它。</li>
+<li>1.4 配置SSH公钥</li>
 </ul>
-<p>但是，<strong>登录并不容易</strong>！</p>
-<p>你想用密钥登录？阿里云最便宜的“轻量应用服务器”，只支持配置一个密钥给root用户。</p>
-<p>你想用密码登录？由于密钥更安全，设置密钥后，阿里云服务器默认不再支持密码登录。(2023.12)</p>
-<p>那该怎么办呢？这里比较绕，我的建议是：</p>
-<ul>
-<li>首先，在<code>root</code>用户中，修改SSH配置文件，恢复使用密码登录。</li>
-<li>然后，使用密码登录<code>newuser</code>用户，绕开阿里云，自行配置SSH公钥，支持密钥登录。</li>
-<li>最后，修改SSH配置文件，禁止密码登录。</li>
-</ul>
-<p>这样一来，以后就都可以用密钥登录<code>newuser</code>用户，无感，安全，还不容易用root权限误操作。</p>
-<p>详细步骤如下所示。<br>
-<br></p>
-<ul>
-<li>1.5 想要恢复使用密码登录，根据<a href="https://help.aliyun.com/zh/simple-application-server/user-guide/connect-to-linux-server-remotely#section-kyx-w5p-3cg">阿里云官方说明</a>，可以通过修改SSH配置文件实现：</li>
-</ul>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">sudo</span> <span class="token function">vim</span> /etc/ssh/sshd_config
-<span class="token comment"># 在vim中，按i进入编辑模式，然后在文件末尾，将PasswordAuthentication no修改为PasswordAuthentication yes</span>
-<span class="token comment"># esc :wq 回车 保存退出</span>
-<span class="token function">sudo</span> <span class="token function">service</span> sshd restart <span class="token comment"># 重启SSH服务</span>
-</code></pre><p>退出登录SSH：</p>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token builtin class-name">logout</span>
-</code></pre><p>接下来，请用密码登录<code>newuser</code>用户。</p>
-<br>
-<ul>
-<li>1.6 自行配置SSH公钥</li>
-</ul>
-<p>这一步，必须使用一个<strong>新建的</strong>用户，如<code>newuser</code></p>
 <blockquote>
-<p>在阿里云的Ubuntu 20.04镜像中，初始除了<code>root</code>用户，还有一个名为<code>admin</code>的用户，这个翻来覆去配不好，原因不明，建议直接把这个用户删了。</p>
+<p>在阿里云的Ubuntu 20.04镜像中，初始除了<code>root</code>用户，还有一个名为<code>admin</code>的用户，<code>admin</code>无法配置ssh公钥，且删除<code>admin</code>可能炸系统。建议放着<code>admin</code>不管它，用自己新建的<code>newuser</code>就行了。</p>
 </blockquote>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">sudo</span> <span class="token function">pkill</span> <span class="token parameter variable">-u</span> admin <span class="token comment"># 终止该用户的所有进程</span>
-<span class="token function">sudo</span> <span class="token function">userdel</span> <span class="token parameter variable">-r</span> admin <span class="token comment"># 删除该用户，及其邮件目录、/home下的主目录。</span>
-</code></pre><p>首先，在本地电脑中创建RSA密钥：</p>
+<p>首先，在本地电脑中创建RSA密钥：</p>
 <pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code>ssh-keygen <span class="token parameter variable">-t</span> rsa <span class="token parameter variable">-C</span> <span class="token string">"newuser@mail.com"</span> <span class="token parameter variable">-f</span> <span class="token string">"C:\ProgramData\ssh<span class="token entity" title="\n">\n</span>ewuser"</span>
 <span class="token comment"># -t 使用的加密算法，一般是RSA</span>
 <span class="token comment"># -C 注释文字</span>
 <span class="token comment"># -f RSA密钥保存位置，将生成私钥文件newuser和公钥文件newuser.pem</span>
 <span class="token comment"># 运行此命令时，不能存在与"C:\ProgramData\ssh\newuser"名称相同的文件或文件夹。</span>
-</code></pre><p>然后，使用newuser用户运行，在服务器中运行：</p>
+</code></pre><p>然后，请在本地cmd中，用密码登录<code>newuser</code>用户。(见1.1)</p>
+<p>接下来，使用newuser用户运行：</p>
 <pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token builtin class-name">cd</span> ~
 <span class="token comment"># 跳转到此用户的根目录，即/home/newuser</span>
 
@@ -133,12 +103,12 @@
 
 <span class="token function">chmod</span> <span class="token number">600</span> .ssh/authorized_keys
 <span class="token function">chmod</span> <span class="token number">700</span> .ssh
-<span class="token comment"># 与上面类似，设置严格的公钥文件访问权限。</span>
+<span class="token comment"># 设置严格的公钥文件访问权限，只允许文件所有者访问。</span>
 </code></pre><p>上述命令参考了<a href="https://blog.csdn.net/braveants/article/details/71747275">这篇CSDN博客</a>。</p>
 <p>这样，就配置好了公钥。可以试试退出SSH，然后试着用密钥连接SSH。</p>
 <p>如果一切顺利，即可修改SSH配置文件，禁止密码登录SSH，以后都用密钥登录。</p>
 <ul>
-<li>1.7 使用VS Code</li>
+<li>1.5 使用VS Code</li>
 </ul>
 <p>配置config文件，然后直接连接即可</p>
 <pre data-role="codeBlock" data-info="config" class="language-config config"><code># "C:\Users\user\.ssh\config"
@@ -149,7 +119,7 @@ Host 1.2.3.4
 </code></pre><blockquote>
 <p>我用的VS Code，如果是JetBrain，需要学生认证，才能白嫖专业版，用SSH (但并不麻烦，建议尽快搞个学生认证)</p>
 </blockquote>
-<h4 id="2-aptminicondagit等">2. apt，Miniconda，git等 </h4>
+<h4 id="2-aptpythongit等工具">2. apt，python，git等工具 </h4>
 <ul>
 <li>2.1 修改Linux主机名</li>
 </ul>
@@ -163,56 +133,21 @@ Host 1.2.3.4
 <code>apt update</code>：遍历本地的软件包列表，对于每一个包，从<strong>软件源</strong>获取其最新的软件包信息。（只保存软件包元数据，不更新包）<br>
 <code>apt upgrade</code>：根据<code>apt update</code>获取的最新软件包信息，下载并安装所有软件包的最新版本。</p>
 <pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">sudo</span> <span class="token function">apt</span> update
-<span class="token function">sudo</span> <span class="token function">apt</span> upgrade
-</code></pre><p>如果这个过程中，新包和现有配置文件产生了冲突，建议保留现有配置文件。（直接选默认选项即可）。</p>
-<blockquote>
-<p>我曾经选了新的，然后SSH炸了，登不上去。这个原理我没搞明白（摆了）最后重装系统了。</p>
-</blockquote>
-<ul>
-<li>2.3 卸载系统自带的python</li>
-</ul>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">sudo</span> <span class="token function">apt-get</span> remove python3
-
-<span class="token comment"># 删除残留文件</span>
-<span class="token function">sudo</span> <span class="token function">apt</span> autoremove <span class="token comment"># 删除所有 不被其他软件包依赖 的apt软件包</span>
-<span class="token function">sudo</span> <span class="token function">rm</span> <span class="token parameter variable">-r</span> /etc/py*
-<span class="token function">sudo</span> <span class="token function">rm</span> <span class="token parameter variable">-r</span> /usr/bin/py*
-<span class="token function">sudo</span> <span class="token function">rm</span> <span class="token parameter variable">-r</span> /usr/lib/py*
-<span class="token function">sudo</span> <span class="token function">rm</span> <span class="token parameter variable">-r</span> /usr/local/lib/py*
-<span class="token function">sudo</span> <span class="token function">rm</span> <span class="token parameter variable">-r</span> /usr/share/py*
-<span class="token function">sudo</span> <span class="token function">rm</span> <span class="token parameter variable">-r</span> /usr/share/man/man1/py*
-
-<span class="token comment"># 检测卸载成功</span>
-python3 <span class="token parameter variable">--version</span>
-</code></pre><p>上述命令参考了<a href="https://zhuanlan.zhihu.com/p/129290782">这篇知乎专栏</a>。</p>
-<ul>
-<li>2.4 安装Miniconda</li>
-</ul>
-<p>Miniconda 貌似不能通过 apt安装，但可以使用官方sh脚本安装。</p>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token builtin class-name">cd</span> ~
-<span class="token function">mkdir</span> tmp
-<span class="token builtin class-name">cd</span> tmp
-<span class="token comment"># 下载.sh安装脚本</span>
-<span class="token function">wget</span> https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-<span class="token comment"># 校验</span>
-sha256sum Miniconda3-latest-Linux-x86_64.sh 
-</code></pre><p>校验下载好的sh脚本，请与<a href="https://docs.conda.io/projects/miniconda/en/latest/">Miniconda官方文档</a>提供的sha256相比对。</p>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">mkdir</span> ~/miniconda3
-<span class="token function">bash</span> Miniconda3-latest-Linux-x86_64.sh <span class="token parameter variable">-b</span> <span class="token parameter variable">-u</span> <span class="token parameter variable">-p</span> ~/miniconda3
-</code></pre><p>-b：在安装过程中使用批处理模式(Batch mode)，也就是说，安装过程中不会有任何交互，所有需要用户输入的地方都会使用默认值。</p>
-<p>-u：如果在指定的安装位置已经存在一个Miniconda安装，那么就更新这个安装。如果没有指定这个选项，而安装位置已经存在一个Miniconda安装，那么安装脚本会失败。</p>
-<p>-p 目录：安装Miniconda到指定目录。</p>
-<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token comment"># 删除.sh安装脚本</span>
-<span class="token builtin class-name">cd</span> ~
-<span class="token function">rm</span> <span class="token parameter variable">-rf</span> tmp/
-
-<span class="token comment"># 设置conda自动运行（打开bash时，自动打开conda）</span>
-<span class="token builtin class-name">cd</span> ~/miniconda3/bin
-./conda init <span class="token function">bash</span>
-<span class="token builtin class-name">logout</span>
-<span class="token comment"># 重新登录SSH，显示(base) newuser@hostname，即配置成功。</span>
+<span class="token function">sudo</span> <span class="token function">apt</span> upgrade <span class="token comment"># 有风险，一些新包可能和现有配置文件产生冲突。可以不执行upgrade，只安装/更新必要的包。</span>
 </code></pre><ul>
-<li>2.5 安装git</li>
+<li>2.3 python和pip</li>
+</ul>
+<p>Ubuntu 22.04自带python3.10，但是需要输入<code>python3</code>调用。如果想要输入<code>python</code>调用，建议装一个<code>python-is-python3</code>:</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> python-is-python3
+
+<span class="token comment"># 确认安装成功</span>
+python <span class="token parameter variable">-V</span>
+pip <span class="token parameter variable">-V</span>
+
+<span class="token comment"># 安装你需要的各种python包，例如：</span>
+pip <span class="token function">install</span> flask
+</code></pre><ul>
+<li>2.4 安装git</li>
 </ul>
 <pre data-role="codeBlock" data-info="shell" class="language-shell shell"><code><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token function">git</span>
 
@@ -229,6 +164,35 @@ ssh-keygen <span class="token parameter variable">-t</span> rsa <span class="tok
 </code></pre><p>上述命令参考了<a href="https://blog.csdn.net/braveants/article/details/71747275">这篇CSDN博客</a>。</p>
 <p>之后，就可以用SSH的方式clone自己的GitHub仓库：<code>git@github.com:用户名/仓库名.git</code></p>
 <p>第一次使用SSH clone时，输入yes，保存GitHub服务器的ECDSA key。</p>
+<h4 id="3-域名和ssl证书">3. 域名和SSL证书 </h4>
+<ul>
+<li>3.1 域名</li>
+</ul>
+<p>认证获得GitHub学生包后，可从网络服务商Namecheap获得一年的免费.me域名和SSL证书</p>
+<p><a href="https://education.github.com/pack/offers">GitHub学生包权益一览(还包括Copilot等)</a></p>
+<p><a href="https://blog.qzink.me/archives/6.html">.me域名获取攻略</a></p>
+<p>不要把域名解析到内地的阿里云服务器，会因为无法备案而被墙。</p>
+<ul>
+<li>3.2 SSL证书</li>
+</ul>
+<p><a href="https://zuizhimai.com/namecheap-ssl-jiaocheng.html">ssl证书激活及使用攻略</a></p>
+<p><a href="https://myssl.com/csr_create.html">生成OpenSSL命令</a></p>
+<p>https是安全的网络协议，通过给http套一层ssl实现。</p>
+<p>为了做到安全，不仅需要用公私钥非对称加密通信过程，还要向用户证明，<strong>当前与用户通信的服务器，就是拥有此域名的服务器</strong>。</p>
+<p><strong>数字签名</strong>：证明“自己是自己”</p>
+<blockquote>
+<p>基于非对称加密算法，如RSA等，生成一对公私钥，用户事先确认，公钥属于该服务器，然后该服务器发送一段明文和一段经私钥加密的密文。用户用私钥解密密文，得到明文，即证明与之通信的服务器持有私钥，即服务器证明了“自己是自己”。</p>
+</blockquote>
+<p>那么，如何事先确认，公钥属于该服务器？</p>
+<p><strong>证书链</strong>：</p>
+<p>世界上有几台根服务器(流浪地球里那个)，被认为是绝对可靠，不可能被劫持的，它们的公钥事先存储于操作系统、浏览器中。</p>
+<p>它们通过<strong>数字签名</strong>，证明“自己是自己”，然后向用户发送下一级服务器的公钥，担保此公钥是可靠的（即向其签发SSL证书），下一级服务器重复此过程，形成了一个由许多SSL证书构成的<strong>证书链</strong>，最后一级到达我的服务器，证明我的服务器拥有我的域名，即“自己是自己”。</p>
+<blockquote>
+<p>即使黑客劫持了用户周围所有的基站、路由器、交换机，他伪造的网站，也无法获取这样一条证书链。</p>
+</blockquote>
+<p>具体到本文，Namecheap充当一个证书颁发机构（Certificate Authority，CA），它已获得来自根服务器的证书链认证。</p>
+<p>我生成一对公私钥，私钥自己收好，公钥提交给CA，并让CA认可我拥有这个域名 (在域名控制台验证，详见上述攻略)</p>
+<p>然后，CA提供它的服务，即<strong>以它的名义，告知用户，我的公钥是可靠的</strong>。用户已知我的公钥，接下来我就能进行数字签名，证明“自己是自己”。</p>
 
       </div>
       

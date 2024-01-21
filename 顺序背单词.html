@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>随机背单词</title>
+    <title>顺序背单词</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-    <h2>随机背单词</h2>
+    <h2>顺序背单词</h2>
     <br>
     单词范围：
     min  <input type="number" id="min" value="1">
@@ -52,9 +52,21 @@
     
     <br><br>
 
-    <button onclick="getRandomWord()">随机英文单词</button>
+    <button onclick="setRange()">设定范围</button>
+
+    <br>
+
+    <div id="result_container">
+        begin：<div id="begin">1</div>&nbsp;&nbsp;&nbsp;&nbsp;
+        当前单词序号：<div id="curr_id">1</div>&nbsp;&nbsp;&nbsp;&nbsp;
+        end：<div id="end">100</div>
+    </div>
+
+    <br>
+
+    <button onclick="getNextWord()">下个单词-英文</button>
     <button onclick="getChineseTranslation()">中文翻译</button>
-    <button onclick="getRandomChinese()">随机中文单词</button>
+    <button onclick="getNextChinese()">下个单词-中文</button>
     <button onclick="getWordTranslation()">英文翻译</button>
 
     <br>
@@ -95,11 +107,24 @@
     </table>
 
     <script>
-        var lastKey = -2;
-        var randomKey = -1;
+        var begin = 1;
+        var last_curr = -1;
+        var curr = 0;
+        var end = 100;
+
         var cnt_right = 0;
         var cnt_wrong = 0;
         var right_rate = 0;
+
+        function setRange() {
+            begin = parseInt(document.getElementById('min').value);
+            curr = begin - 1;
+            end = parseInt(document.getElementById('max').value);
+
+            document.getElementById('begin').innerHTML = begin;
+            document.getElementById('curr_id').innerHTML = curr;
+            document.getElementById('end').innerHTML = end;
+        }
 
         document.getElementById('toggleButton').addEventListener('click', function() {
             var table = document.getElementById('wrong_record_table');
@@ -112,46 +137,64 @@
             }
         });
 
-        function getRandomWord() {
-            randomKey = getRandomKey();
-            var word = dict_word[randomKey];
-            displayResult('result_word', word);
-            displayResult('result_chinese', '');
+        function getNextWord() {
+            curr++;
+            if (curr > end) {
+                displayResult('result_word', '恭喜你，背完了！');
+                displayResult('result_chinese', '请重新设定范围');
+            } else {
+                document.getElementById('curr_id').innerHTML = curr;
+
+                var word = dict_word[curr];
+                displayResult('result_word', word);
+                displayResult('result_chinese', '');
+            }
         }
 
-        function getRandomChinese() {
-            randomKey = getRandomKey();
-            var chinese = dict_chinese[randomKey];
-            displayResult('result_chinese', chinese);
-            displayResult('result_word', '');
+        function getNextChinese() {
+            curr++;
+            if (curr > end) {
+                displayResult('result_word', '恭喜你，背完了！');
+                displayResult('result_chinese', '请重新设定范围');
+            } else {
+                document.getElementById('curr_id').innerHTML = curr;
+
+                var chinese = dict_chinese[curr];
+                displayResult('result_chinese', chinese);
+                displayResult('result_word', '');
+            }
         }
 
         function getChineseTranslation() {
-            var chinese = dict_chinese[randomKey];
-            displayResult('result_chinese', chinese);
+            if (curr > end) {
+                displayResult('result_word', '恭喜你，背完了！');
+                displayResult('result_chinese', '请重新设定范围');
+            } else {
+                var chinese = dict_chinese[curr];
+                displayResult('result_chinese', chinese);
+            }
         }
 
         function getWordTranslation() {
-            var word = dict_word[randomKey];
-            displayResult('result_word', word);
-        }
-
-        function getRandomKey() {
-            var min = parseInt(document.getElementById('min').value);
-            var max = parseInt(document.getElementById('max').value);
-            return Math.floor(Math.random() * (max - min + 1)) + min;
+            if (curr > end) {
+                displayResult('result_word', '恭喜你，背完了！');
+                displayResult('result_chinese', '请重新设定范围');
+            } else {
+                var word = dict_word[curr];
+                displayResult('result_word', word);
+            }
         }
 
         function displayResult(resultId, result) {
-            var resultDiv = document.getElementById(resultId);
-            resultDiv.innerHTML = result;
+            document.getElementById(resultId).innerHTML = result;
         }
 
         function right() {
-            if (lastKey == randomKey) {
+            if (last_curr == curr) {
                 return;
             } else {
-                lastKey = randomKey;
+                last_curr = curr;
+
                 cnt_right++;
                 right_rate = cnt_right / (cnt_right + cnt_wrong) * 100;
                 document.getElementById("count_right").innerHTML = cnt_right;
@@ -160,10 +203,11 @@
         }
 
         function wrong() {
-            if (lastKey == randomKey) {
+            if (last_curr == curr) {
                 return;
             } else {
-                lastKey = randomKey;
+                last_curr = curr;
+
                 cnt_wrong++;
                 right_rate = cnt_right / (cnt_right + cnt_wrong) * 100;
                 document.getElementById("count_wrong").innerHTML = cnt_wrong;
@@ -172,8 +216,8 @@
                 // record the wrong word
                 var table = document.getElementById("wrong_record_table");
                 var row = table.insertRow(-1);
-                row.insertCell(0).innerHTML = dict_word[randomKey];
-                row.insertCell(1).innerHTML = dict_chinese[randomKey];
+                row.insertCell(0).innerHTML = dict_word[curr];
+                row.insertCell(1).innerHTML = dict_chinese[curr];
             }
         }
 
